@@ -72,21 +72,30 @@ Google Play Store HTML changes may break the extraction logic in the future.
 
 ## Screenshots
 
-### Android - App List
+<p align="center">
+  <img src="https://res.cloudinary.com/dbw8igay3/image/upload/home-android_krdsko.png" width="240" />
+  <img src="https://res.cloudinary.com/dbw8igay3/image/upload/loading-android_bmgkwc.png" width="240" />
+</p>
 
-![Android list](https://res.cloudinary.com/dbw8igay3/image/upload/home-android_krdsko.png)
+<p align="center">
+  <b>Android - App List</b>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <b>Android - Loading</b>
+</p>
 
-### Android - Loading
+<br />
 
-![Android loading](https://res.cloudinary.com/dbw8igay3/image/upload/loading-android_bmgkwc.png)
+<p align="center">
+  <img src="https://res.cloudinary.com/dbw8igay3/image/upload/app-android-android_etg2ub.png" width="240" />
+  <img src="https://res.cloudinary.com/dbw8igay3/image/upload/app-android-ios_gk1wje.png" width="240" />
+</p>
 
-### Android - App Details
+<p align="center">
+  <b>Android - App Details</b>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <b>iOS - App Details</b>
+</p>
 
-![Android details](https://res.cloudinary.com/dbw8igay3/image/upload/app-android-android_etg2ub.png)
-
-### iOS - App Details
-
-![iOS details](https://res.cloudinary.com/dbw8igay3/image/upload/app-android-ios_gk1wje.png)
 
 ## Credits
 
