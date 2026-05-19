@@ -4,27 +4,41 @@ import {
   FlatList,
   Image,
   StatusBar,
-  StyleSheet,
   Text,
   View,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { getAndroidVersion } from "./providers/android";
+import { lookupVersion } from "./providers/utils";
+import styles from "./styles";
 
-const APPS_MOCK = [
-  {
-    package: "com.br.mydeviceinfo",
-    language: "PT-BR",
-  },
-  {
-    package: "host.exp.exponent",
-    language: "ES-ES",
-  },
-  {
-    package: 'com.spotify.music',
-    language: 'EN-US'
-  }
-];
+type PlatformType = "android" | "ios";
+
+const APPS_MOCK: {
+  bundleId: string;
+  language: string;
+  platform: PlatformType;
+}[] = [
+    {
+      bundleId: "com.br.mydeviceinfo",
+      language: "PT-BR",
+      platform: "android",
+    },
+    {
+      bundleId: "host.exp.exponent",
+      language: "ES-ES",
+      platform: "android",
+    },
+    {
+      bundleId: "com.spotify.music",
+      language: "EN-US",
+      platform: "android",
+    },
+    {
+      bundleId: "com.spotify.client",
+      language: "BR",
+      platform: "ios",
+    },
+  ];
 
 type AppInfo = {
   version: string;
@@ -48,14 +62,32 @@ export default function App() {
 
       const responses = await Promise.all(
         APPS_MOCK.map(async (app) => {
-          const response = await getAndroidVersion(
-            app.package,
-            app.language
-          );
+          try {
+            const response = await lookupVersion(
+              app.platform,
+              app.bundleId,
+              app.language
+            );
 
-          return response;
+            return response;
+          } catch (error) {
+            console.log("APP ERROR", app.bundleId, error);
+
+            return {
+              version: "N/A",
+              releasedAt: "",
+              updateAt: "",
+              notes: "",
+              url: "",
+              lastChecked: new Date().toISOString(),
+              appIcon: "",
+              appName: app.bundleId,
+              description: "Erro ao buscar aplicativo",
+            };
+          }
         })
       );
+
       setApps(responses);
     } catch (error) {
       console.log("ERROR", error);
@@ -73,34 +105,46 @@ export default function App() {
       <View style={styles.card}>
         <View style={styles.header}>
           <Image
-            source={{ uri: item.appIcon }}
+            source={{
+              uri:
+                item.appIcon ||
+                "https://via.placeholder.com/100x100.png?text=App",
+            }}
             style={styles.icon}
             resizeMode="cover"
           />
 
           <View style={{ flex: 1 }}>
-            <Text style={styles.appName}>{item.appName}</Text>
+            <Text style={styles.appName}>
+              {item.appName || "Unknown App"}
+            </Text>
 
             <Text style={styles.version}>
-              Versão {item.version}
+              Versão {item.version || "N/A"}
             </Text>
           </View>
         </View>
 
         <Text style={styles.description} numberOfLines={3}>
-          {item.description}
+          {item.description || "Sem descrição"}
         </Text>
 
         <View style={styles.infoContainer}>
           <View style={styles.infoBox}>
-            <Text style={styles.infoLabel}>Lançamento</Text>
+            <Text style={styles.infoLabel}>
+              Lançamento
+            </Text>
+
             <Text style={styles.infoValue}>
               {item.releasedAt || "N/A"}
             </Text>
           </View>
 
           <View style={styles.infoBox}>
-            <Text style={styles.infoLabel}>Atualização</Text>
+            <Text style={styles.infoLabel}>
+              Atualização
+            </Text>
+
             <Text style={styles.infoValue}>
               {item.updateAt || "N/A"}
             </Text>
@@ -113,17 +157,20 @@ export default function App() {
           </Text>
 
           <Text style={styles.lastCheckedDate}>
-            {new Date().toLocaleString()}
+            {new Date(
+              item.lastChecked
+            ).toLocaleString()}
           </Text>
         </View>
 
-         <View style={styles.footer}>
+        <View style={styles.footer}>
           <Text style={styles.lastChecked}>
             Notas da versão:
           </Text>
 
           <Text style={styles.lastCheckedDate}>
-            {item.notes || 'N/A'}
+            {item.notes ||
+              "Sem notas disponíveis"}
           </Text>
         </View>
       </View>
@@ -136,19 +183,27 @@ export default function App() {
       style={styles.gradient}
     >
       <View style={styles.container}>
-        <StatusBar barStyle="light-content" />
+        <StatusBar
+          translucent
+          backgroundColor="transparent"
+          barStyle="light-content"
+        />
 
         <Text style={styles.title}>
-          Google Play Tracker
+          App Version Tracker
         </Text>
 
         <Text style={styles.subtitle}>
-          Informações dos aplicativos em tempo real
+          Google Play + App Store
         </Text>
 
         {loading ? (
           <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#fff" />
+            <ActivityIndicator
+              size="large"
+              color="#fff"
+            />
+
             <Text style={styles.loadingText}>
               Buscando aplicativos...
             </Text>
@@ -156,7 +211,7 @@ export default function App() {
         ) : (
           <FlatList
             data={apps}
-            keyExtractor={(item) => item.appIcon}
+            keyExtractor={(item) => item.url}
             renderItem={renderItem}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{
@@ -168,125 +223,3 @@ export default function App() {
     </LinearGradient>
   );
 }
-
-const styles = StyleSheet.create({
-  gradient: {
-    flex: 1,
-  },
-
-  container: {
-    flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 20,
-  },
-
-  title: {
-    color: "#fff",
-    fontSize: 32,
-    fontWeight: "800",
-  },
-
-  subtitle: {
-    color: "#94a3b8",
-    fontSize: 15,
-    marginTop: 6,
-    marginBottom: 25,
-  },
-
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  loadingText: {
-    color: "#fff",
-    marginTop: 14,
-    fontSize: 16,
-  },
-
-  card: {
-    backgroundColor: "rgba(255,255,255,0.08)",
-    borderRadius: 24,
-    padding: 18,
-    marginBottom: 18,
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.08)",
-  },
-
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 16,
-  },
-
-  icon: {
-    width: 70,
-    height: 70,
-    borderRadius: 18,
-    marginRight: 14,
-    backgroundColor: "#fff",
-  },
-
-  appName: {
-    color: "#fff",
-    fontSize: 20,
-    fontWeight: "700",
-  },
-
-  version: {
-    color: "#38bdf8",
-    marginTop: 4,
-    fontSize: 14,
-    fontWeight: "600",
-  },
-
-  description: {
-    color: "#cbd5e1",
-    lineHeight: 22,
-    marginBottom: 18,
-  },
-
-  infoContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 18,
-  },
-
-  infoBox: {
-    flex: 1,
-    backgroundColor: "rgba(255,255,255,0.05)",
-    padding: 14,
-    borderRadius: 16,
-    marginHorizontal: 4,
-  },
-
-  infoLabel: {
-    color: "#94a3b8",
-    fontSize: 12,
-    marginBottom: 6,
-  },
-
-  infoValue: {
-    color: "#fff",
-    fontWeight: "700",
-    fontSize: 14,
-  },
-
-  footer: {
-    borderTopWidth: 1,
-    borderTopColor: "rgba(255,255,255,0.06)",
-    paddingTop: 12,
-  },
-
-  lastChecked: {
-    color: "#94a3b8",
-    fontSize: 12,
-  },
-
-  lastCheckedDate: {
-    color: "#fff",
-    marginTop: 4,
-    fontSize: 13,
-  },
-});
