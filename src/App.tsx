@@ -82,7 +82,7 @@ export default function App() {
               lastChecked: new Date().toISOString(),
               appIcon: "",
               appName: app.bundleId,
-              description: "Erro ao buscar aplicativo",
+               description: "Failed to fetch app",
             };
           }
         })
@@ -120,19 +120,19 @@ export default function App() {
             </Text>
 
             <Text style={styles.version}>
-              Versão {item.version || "N/A"}
+              Version {item.version || "N/A"}
             </Text>
           </View>
         </View>
 
         <Text style={styles.description} numberOfLines={3}>
-          {item.description || "Sem descrição"}
+          {item.description || "No description"}
         </Text>
 
         <View style={styles.infoContainer}>
           <View style={styles.infoBox}>
             <Text style={styles.infoLabel}>
-              Lançamento
+              Release
             </Text>
 
             <Text style={styles.infoValue}>
@@ -142,7 +142,7 @@ export default function App() {
 
           <View style={styles.infoBox}>
             <Text style={styles.infoLabel}>
-              Atualização
+              Update
             </Text>
 
             <Text style={styles.infoValue}>
@@ -153,7 +153,7 @@ export default function App() {
 
         <View style={styles.footer}>
           <Text style={styles.lastChecked}>
-            Última verificação:
+            Last checked:
           </Text>
 
           <Text style={styles.lastCheckedDate}>
@@ -165,12 +165,12 @@ export default function App() {
 
         <View style={styles.footer}>
           <Text style={styles.lastChecked}>
-            Notas da versão:
+            Release notes:
           </Text>
 
           <Text style={styles.lastCheckedDate}>
             {item.notes ||
-              "Sem notas disponíveis"}
+              "No notes available"}
           </Text>
         </View>
       </View>
@@ -205,7 +205,7 @@ export default function App() {
             />
 
             <Text style={styles.loadingText}>
-              Buscando aplicativos...
+              Fetching apps...
             </Text>
           </View>
         ) : (
