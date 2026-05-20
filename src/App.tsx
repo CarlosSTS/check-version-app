@@ -10,6 +10,7 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { lookupVersion } from "./providers/utils";
 import styles from "./styles";
+import appIcon from "../assets/icon.png";
 
 type PlatformType = "android" | "ios";
 
@@ -41,9 +42,9 @@ const APPS_MOCK: {
   ];
 
 type AppInfo = {
-  version: string;
+  version: string | null;
   releasedAt: string;
-  updateAt: string;
+  updatedAt: string;
   notes: string;
   url: string;
   country: string;
@@ -77,7 +78,7 @@ export default function App() {
             return {
               version: "N/A",
               releasedAt: "",
-              updateAt: "",
+              updatedAt: "",
               notes: "",
               url: "",
               lastChecked: new Date().toISOString(),
@@ -104,15 +105,12 @@ export default function App() {
   }, []);
 
   const renderItem = ({ item }: { item: AppInfo }) => {
+    const uri = item?.appIcon ? { uri: item.appIcon } : appIcon;
     return (
       <View style={styles.card}>
         <View style={styles.header}>
           <Image
-            source={{
-              uri:
-                item.appIcon ||
-                "https://via.placeholder.com/100x100.png?text=App",
-            }}
+            source={uri}
             style={styles.icon}
             resizeMode="cover"
           />
@@ -149,7 +147,7 @@ export default function App() {
             </Text>
 
             <Text style={styles.infoValue}>
-              {item.updateAt || "N/A"}
+              {item.updatedAt || "N/A"}
             </Text>
           </View>
         </View>
