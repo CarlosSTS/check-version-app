@@ -15,12 +15,13 @@ export const getIosVersion = async (bundleId, country) => {
 
   const res = data.results[0];
   return {
-    version: res.version || null,
+    version: res.version || "",
     releasedAt: res.currentVersionReleaseDate || res.releaseDate || "",
     updateAt: res.currentVersionReleaseDate || "",
     notes: res.releaseNotes || "",
     url: res.trackViewUrl || res.artistViewUrl || res.sellerUrl || "",
     country: country || "",
+    bundleId: bundleId || "",
     lastChecked: new Date().toISOString(),
     appIcon: res.artworkUrl512 || res.artworkUrl100 || "",
     appName: res.trackName || "",

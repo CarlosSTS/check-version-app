@@ -39,6 +39,7 @@ export const getAndroidVersion = async (bundleId, country) => {
     notes: notes || "",
     url: `https://play.google.com/store/apps/details?id=${bundleId}&hl=${country}`,
     country: country || "",
+    bundleId: bundleId || "",
     lastChecked: new Date().toISOString(),
     appIcon: appIcon || "",
     appName: appName || "",

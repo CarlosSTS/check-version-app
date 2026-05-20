@@ -46,6 +46,8 @@ type AppInfo = {
   updateAt: string;
   notes: string;
   url: string;
+  country: string;
+  bundleId: string;
   lastChecked: string;
   appIcon: string;
   appName: string;
@@ -72,7 +74,6 @@ export default function App() {
             return response;
           } catch (error) {
             console.log("APP ERROR", app.bundleId, error);
-
             return {
               version: "N/A",
               releasedAt: "",
@@ -82,7 +83,9 @@ export default function App() {
               lastChecked: new Date().toISOString(),
               appIcon: "",
               appName: app.bundleId,
-               description: "Failed to fetch app",
+              country: app.language,
+              bundleId: app.bundleId,
+              description: "Failed to fetch app",
             };
           }
         })
@@ -211,7 +214,7 @@ export default function App() {
         ) : (
           <FlatList
             data={apps}
-            keyExtractor={(item) => item.url}
+            keyExtractor={(item) => item.bundleId}
             renderItem={renderItem}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{
