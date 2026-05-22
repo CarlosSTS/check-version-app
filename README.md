@@ -72,12 +72,12 @@ Google Play Store HTML changes may break the extraction logic in the future.
 
 ## Screenshots
 
-<p align="center">
-  <img src="https://res.cloudinary.com/dbw8igay3/image/upload/home-android_krdsko.png" width="240" />
-  <img src="https://res.cloudinary.com/dbw8igay3/image/upload/loading-android_bmgkwc.png" width="240" />
+<p>
+  <img src="https://res.cloudinary.com/dbw8igay3/image/upload/v1779486121/loading_j1uwiw.png" alt="Loading" width="240" />
+  <img src="https://res.cloudinary.com/dbw8igay3/image/upload/v1779486124/home_pzpuoj.png" alt="Home"width="240" />
 </p>
 
-<p align="center">
+<p>
   <b>Android - App List</b>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   <b>Android - Loading</b>
@@ -85,17 +85,16 @@ Google Play Store HTML changes may break the extraction logic in the future.
 
 <br />
 
-<p align="center">
-  <img src="https://res.cloudinary.com/dbw8igay3/image/upload/app-android-android_etg2ub.png" width="240" />
-  <img src="https://res.cloudinary.com/dbw8igay3/image/upload/app-android-ios_gk1wje.png" width="240" />
+<p>
+  <img src="https://res.cloudinary.com/dbw8igay3/image/upload/v1779486121/app_amdroid_k1nh4d.png" alt="Android-app" width="240" />
+  <img src="https://res.cloudinary.com/dbw8igay3/image/upload/v1779486122/app_ios_gqxtah.png" alt="IOS app"width="240" />
 </p>
 
-<p align="center">
+<p>
   <b>Android - App Details</b>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   <b>iOS - App Details</b>
 </p>
-
 
 ## Credits
 
