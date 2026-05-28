@@ -120,6 +120,78 @@ const styles = StyleSheet.create({
     marginTop: 4,
     fontSize: 13,
   },
+
+  storeRow: {
+    borderTopWidth: 1,
+    borderTopColor: "rgba(255,255,255,0.06)",
+    paddingTop: 12,
+    marginTop: 12,
+  },
+
+  storeLink: {
+    color: "#38bdf8",
+    fontWeight: "700",
+    fontSize: 14,
+    textDecorationLine: "underline",
+  },
+
+  disabledText: {
+    color: "#64748b",
+  },
+
+  modalBackdrop: {
+    flex: 1,
+    backgroundColor: "rgba(15,23,42,0.75)",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 24,
+  },
+
+  modalCard: {
+    width: "100%",
+    backgroundColor: "rgba(15,23,42,0.95)",
+    borderRadius: 22,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: "rgba(148,163,184,0.25)",
+  },
+
+  modalHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+
+  modalTitle: {
+    color: "#fff",
+    fontSize: 20,
+    fontWeight: "700",
+    flex: 1,
+  },
+
+  closeButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "rgba(255,255,255,0.08)",
+    marginLeft: 12,
+  },
+
+  closeButtonText: {
+    color: "#fff",
+    fontSize: 14,
+    fontWeight: "700",
+  },
+
+  modalImage: {
+    width: "100%",
+    height: 260,
+    borderRadius: 18,
+    marginTop: 16,
+    backgroundColor: "#fff",
+  },
 });
 
 export default styles;

@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
   FlatList,
   Image,
+  Linking,
+  Modal,
   StatusBar,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -53,11 +57,14 @@ type AppInfo = {
   appIcon: string;
   appName: string;
   description: string;
+  platform: PlatformType;
 };
 
 export default function App() {
   const [apps, setApps] = useState<AppInfo[]>([]);
   const [loading, setLoading] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedApp, setSelectedApp] = useState<AppInfo | null>(null);
 
   const GetInfoApps = async () => {
     try {
@@ -72,7 +79,10 @@ export default function App() {
               app.language
             );
 
-            return response;
+            return {
+              ...response,
+              platform: app.platform,
+            };
           } catch (error) {
             console.log("APP ERROR", app.bundleId, error);
             return {
@@ -87,6 +97,7 @@ export default function App() {
               country: app.language,
               bundleId: app.bundleId,
               description: "Failed to fetch app",
+              platform: app.platform,
             };
           }
         })
@@ -104,16 +115,44 @@ export default function App() {
     GetInfoApps();
   }, []);
 
+  const handleOpenModal = (app: AppInfo) => {
+    setSelectedApp(app);
+    setModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalVisible(false);
+    setSelectedApp(null);
+  };
+
+  const handleOpenStore = async (url?: string) => {
+    if (!url) {
+      return;
+    }
+
+    const canOpen = await Linking.canOpenURL(url);
+    if (canOpen) {
+      await Linking.openURL(url);
+    return;
+    }
+    Alert.alert("Error", "Unable to open the store link.");
+  };
+
   const renderItem = ({ item }: { item: AppInfo }) => {
     const uri = item?.appIcon ? { uri: item.appIcon } : appIcon;
     return (
       <View style={styles.card}>
         <View style={styles.header}>
-          <Image
-            source={uri}
-            style={styles.icon}
-            resizeMode="cover"
-          />
+          <TouchableOpacity
+            onPress={() => handleOpenModal(item)}
+            activeOpacity={9}
+          >
+            <Image
+              source={uri}
+              style={styles.icon}
+              resizeMode="cover"
+            />
+          </TouchableOpacity>
 
           <View style={{ flex: 1 }}>
             <Text style={styles.appName}>
@@ -137,7 +176,7 @@ export default function App() {
             </Text>
 
             <Text style={styles.infoValue}>
-              {item.releasedAt || "N/A"}
+              {item.platform === 'ios' ? new Date(item.releasedAt).toLocaleDateString("pt-BR") : item.releasedAt}
             </Text>
           </View>
 
@@ -147,7 +186,7 @@ export default function App() {
             </Text>
 
             <Text style={styles.infoValue}>
-              {item.updatedAt || "N/A"}
+              {item.platform === 'ios' ? new Date(item.updatedAt).toLocaleDateString("pt-BR") : item.updatedAt}
             </Text>
           </View>
         </View>
@@ -173,6 +212,23 @@ export default function App() {
             {item.notes ||
               "No notes available"}
           </Text>
+        </View>
+
+        <View style={styles.storeRow}>
+          <TouchableOpacity
+            onPress={() => handleOpenStore(item.url)}
+            activeOpacity={0.85}
+            disabled={!item.url}
+          >
+            <Text
+              style={[
+                styles.storeLink,
+                !item.url && styles.disabledText,
+              ]}
+            >
+              {item.url ? "Abrir na loja" : "Link indisponivel"}
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -220,6 +276,41 @@ export default function App() {
             }}
           />
         )}
+
+        <Modal
+          transparent
+          animationType="fade"
+          visible={modalVisible}
+          onRequestClose={handleCloseModal}
+        >
+          <View style={styles.modalBackdrop}>
+            <View style={styles.modalCard}>
+              <View style={styles.modalHeader}>
+                <Text style={styles.modalTitle}>
+                  {selectedApp?.appName || "App"}
+                </Text>
+
+                <TouchableOpacity
+                  onPress={handleCloseModal}
+                  style={styles.closeButton}
+                  activeOpacity={0.85}
+                >
+                  <Text style={styles.closeButtonText}>X</Text>
+                </TouchableOpacity>
+              </View>
+
+              <Image
+                source={
+                  selectedApp?.appIcon
+                    ? { uri: selectedApp.appIcon }
+                    : appIcon
+                }
+                style={styles.modalImage}
+                resizeMode="cover"
+              />
+            </View>
+          </View>
+        </Modal>
       </View>
     </LinearGradient>
   );
